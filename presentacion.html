@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Let's Move! · Physical Activity</title>
+<script>
+/* ==================================================================
+   ✏️  ACÁ SE EDITA TODO EL TEXTO (no hace falta tocar nada más abajo)
+   ------------------------------------------------------------------
+   • Cambiá los nombres en NAMES. Si son solo 2, borrá el tercero:
+       const NAMES = ["Sofi", "Tomi"];
+     y la presentación reparte sola las diapositivas.
+   • Para resaltar una palabra con "marcador", ponela entre asteriscos:
+       "Small changes, *BIG* difference"
+   • Guardá el archivo y recargá el navegador (F5).
+   ================================================================== */
+
+const NAMES = ["Santiago Galdeano", "Joaquín García", "Bautista Gómez"];
+
+// Quién expone cada diapositiva (números de diapositiva).
+// Con 3 nombres se usa TURNOS_3; con 2 nombres, TURNOS_2.
+const TURNOS_3 = [[2, 3, 4], [5, 6, 7, 8], [9, 10, 11]];
+const TURNOS_2 = [[2, 3, 4, 5, 6], [7, 8, 9, 10, 11]];
+
+// Textos chiquitos de la interfaz
+const UI = { mic: "🎤", next: "Next:", everyone: "Everyone" };
+
+const SLIDES = [
+  /* 1 · PORTADA (todos) */
+  { type: "cover",
+    title: "LET’S MOVE!",
+    emoji: "🏃‍♀️",
+    subtitle: "Physical activity: *small changes, big differences*",
+    art: ["⚽", "🚲", "💪", "❤️"] },
+
+  /* 2 */
+  { type: "checklist",
+    title: "*Today* you will…",
+    art: "🤸",
+    items: [
+      { e: "✅", t: "Learn why moving is important" },
+      { e: "✅", t: "Find easy ways to stay active" },
+      { e: "✅", t: "Choose *ONE* healthy habit" } ] },
+
+  /* 3 */
+  { type: "what",
+    title: "What is *physical activity*?",
+    key: "Any body movement that uses energy",
+    items: [
+      { e: "🚶", t: "walking" },
+      { e: "🏃", t: "running" },
+      { e: "💃", t: "dancing" },
+      { e: "🏊", t: "swimming" },
+      { e: "🚴", t: "cycling" },
+      { e: "⚽", t: "sports" },
+      { e: "🧹", t: "chores" } ],
+    sticker: "Not only the gym!" },
+
+  /* 4 */
+  { type: "twocol",
+    title: "Why is it *important*?",
+    cols: [
+      { head: "HEALTHY BODY", items: [
+        { e: "💪", t: "Strong muscles & bones" },
+        { e: "❤️", t: "Healthy heart" },
+        { e: "😴", t: "Better sleep" } ] },
+      { head: "HEALTHY MIND", items: [
+        { e: "😊", t: "Less stress" },
+        { e: "⚡", t: "More energy" },
+        { e: "🧠", t: "Better focus" } ] } ] },
+
+  /* 5 */
+  { type: "cards",
+    title: "Teens: your body and brain are *still growing!*",
+    items: [
+      { e: "🦴", t: "Physical health" },
+      { e: "😌", t: "Mental health" },
+      { e: "📚", t: "School: better memory" },
+      { e: "🤝", t: "Friends & teamwork" },
+      { e: "🔋", t: "Sleep & energy" } ] },
+
+  /* 6 */
+  { type: "number",
+    title: "The *magic* number",
+    number: "60",
+    unit: "minutes a day ⏱️",
+    source: "Ages 5–17 · World Health Organization" },
+
+  /* 7 */
+  { type: "people",
+    title: "The *problem* 😟",
+    total: 10, active: 2,          // 10 personitas, 2 en color
+    big: "8 out of 10",
+    text: "teens don’t move enough",
+    source: "WHO" },
+
+  /* 8 */
+  { type: "cards",
+    title: "Common *bad habits*",
+    items: [
+      { e: "📱", t: "Too much screen time" },
+      { e: "🪑", t: "Sitting all day" },
+      { e: "🥱", t: "No motivation" },
+      { e: "⏰", t: "“I have no time!”" },
+      { e: "😳", t: "Feeling shy" },
+      { e: "🔥", t: "Too much, too fast" } ] },
+
+  /* 9 */
+  { type: "icons",
+    title: "How can teens *improve*?",
+    items: [
+      { e: "⚽", t: "Play sports" },
+      { e: "🚲", t: "Walk or ride a bike" },
+      { e: "🥗", t: "Eat healthy" },
+      { e: "😴", t: "Sleep well" },
+      { e: "📵", t: "Less screen time" } ] },
+
+  /* 10 */
+  { type: "cards",
+    title: "Small changes, *BIG* difference",
+    items: [
+      { e: "🪜", t: "Take the stairs" },
+      { e: "🚶", t: "Walk to school" },
+      { e: "🎵", t: "Dance to music" },
+      { e: "🙆", t: "Stretch breaks" } ],
+    sticker: "Every minute counts!" },
+
+  /* 11 · usa las mismas tarjetas de la diapositiva 10 */
+  { type: "challenge",
+    title: "Your *challenge* 🎯",
+    subtitle: "Choose *ONE* habit!",
+    cardsFrom: 10,
+    great: "Great choice! 🎉",
+    reset: "↺ Reset" },
+
+  /* 12 · CIERRE (todos) */
+  { type: "closing",
+    line: "Moving is not only the gym. *Every bit counts!* 💛",
+    big: "Thank you!",
+    art: ["🏃", "⚽", "💃", "🚲", "🏊", "🤸"] },
+];
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --cream:#FFF8EE; --ink:#2E3A59;
+  --coral:#FF7A6B; --sky:#4DA8FF; --mint:#2EC4A0; --sun:#FFC93C; --lilac:#A98BFF;
+  --emoji:"Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif;
+  --f-title:"Fredoka","Baloo 2",ui-rounded,"Arial Rounded MT Bold",system-ui,var(--emoji);
+  --f-text:"Nunito",ui-rounded,"Arial Rounded MT Bold",system-ui,var(--emoji);
+}
+html,body{margin:0;height:100%;overflow:hidden;background:#FBEFDF}
+body{font-family:var(--f-text);color:var(--ink);-webkit-user-select:none;user-select:none;-webkit-font-smoothing:antialiased}
+body.nocursor, body.nocursor *{cursor:none !important}
+
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center center;
+  background:var(--cream);overflow:hidden;transform:translate(-50%,-50%)}
+
+/* ---------- slide base ---------- */
+/* Each slide has its own solid background and only the current one is shown,
+   so a slide can never show through another one. */
+.slide{position:absolute;top:0;right:0;bottom:0;left:0;box-sizing:border-box;padding:62px 110px 132px;
+  display:none;flex-direction:column;overflow:hidden;background:var(--bg,#FFF8EE)}
+.slide.active{display:flex;animation:slideIn .35s ease both}
+@keyframes slideIn{from{opacity:0}to{opacity:1}}
+.deco{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none;z-index:0}
+.deco svg{position:absolute;overflow:visible}
+.title,.body,.chal-sub,.source,.cover,.closing{position:relative;z-index:1}
+
+.emo{font-family:var(--emoji);line-height:1;font-weight:400;display:inline-block;font-style:normal}
+
+.title{font-family:var(--f-title);font-weight:700;font-size:90px;line-height:1.06;margin:0;max-width:1300px;letter-spacing:.5px}
+.mark{position:relative;z-index:0;white-space:nowrap}
+.mark::after{content:"";position:absolute;left:-.1em;right:-.1em;bottom:.06em;height:.4em;background:var(--mid);
+  border-radius:.25em;z-index:-1;transform:rotate(-1.2deg)}
+.body{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+
+.card{background:#fff;border:5px solid var(--accent);border-radius:40px;box-sizing:border-box;
+  box-shadow:0 10px 0 var(--mid), 0 24px 40px rgba(46,58,89,.12)}
+.lbl{font-weight:800;line-height:1.12;text-align:center;text-wrap:balance}
+.title,.cover-sub,.num-unit,.stat-text,.keyphrase,.close-line{text-wrap:balance}
+
+/* badge "who is talking" */
+.badge{position:absolute;top:44px;right:60px;z-index:3;white-space:nowrap;
+  background:var(--accent);color:var(--ink);border:5px solid #fff;border-radius:999px;
+  font-family:var(--f-title);font-weight:600;font-size:38px;line-height:1;padding:12px 30px 14px;
+  box-shadow:0 12px 26px rgba(46,58,89,.18);--r:2deg}
+.next{position:absolute;right:60px;bottom:30px;z-index:3;white-space:nowrap;
+  background:var(--nc);color:var(--ink);border:5px solid #fff;border-radius:999px;
+  font-family:var(--f-title);font-weight:600;font-size:38px;line-height:1;padding:12px 30px 14px;
+  box-shadow:0 10px 22px rgba(46,58,89,.18);--r:-1.5deg}
+
+/* sticker */
+.sticker{position:absolute;z-index:3;width:300px;height:300px;display:grid;place-items:center;--r:-9deg;
+  filter:drop-shadow(0 12px 16px rgba(46,58,89,.2))}
+.sticker svg{position:absolute;top:0;right:0;bottom:0;left:0;width:100%;height:100%}
+.sticker span{position:relative;font-family:var(--f-title);font-weight:700;font-size:44px;line-height:1.05;text-align:center;max-width:210px}
+
+/* ---------- pop animation ---------- */
+@keyframes pop{
+  0%  {opacity:0;transform:translateY(34px) scale(.82) rotate(var(--r,0deg))}
+  65% {opacity:1;transform:translateY(-6px) scale(1.04) rotate(var(--r,0deg))}
+  100%{opacity:1;transform:translateY(0) scale(1) rotate(var(--r,0deg))}
+}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.pop{transform:rotate(var(--r,0deg))}
+.slide .pop{opacity:0}
+.slide.active .pop{opacity:1;animation:pop .6s cubic-bezier(.3,1.35,.5,1) backwards;
+  animation-delay:calc(.12s + var(--i,0) * .1s)}
+
+/* ---------- 1 · cover ---------- */
+.cover{display:flex;align-items:center;justify-content:space-between;height:100%;gap:20px}
+.cover-left{width:1020px;display:flex;flex-direction:column;gap:36px}
+.cover-title{font-family:var(--f-title);font-weight:700;font-size:200px;line-height:.98;margin:0;letter-spacing:3px}
+.cover-title span{display:inline-block;text-shadow:9px 9px 0 var(--ink)}
+.cover-sub{font-size:56px;font-weight:800;line-height:1.22;margin:0}
+.names{display:flex;flex-wrap:wrap;gap:24px;margin-top:6px}
+.name{background:var(--c);font-family:var(--f-title);font-weight:600;font-size:42px;line-height:1;white-space:nowrap;
+  padding:12px 32px 16px;border-radius:999px;border:5px solid #fff;box-shadow:0 10px 22px rgba(46,58,89,.18)}
+.cover-art{position:relative;width:660px;height:780px;flex:none}
+.art-blob{position:absolute;left:60px;top:120px;width:540px;height:540px;display:grid;place-items:center}
+.art-blob svg{position:absolute;top:0;right:0;bottom:0;left:0;width:100%;height:100%}
+.art-blob .emo{position:relative;font-size:290px}
+.mini{position:absolute;width:150px;height:150px;border-radius:50%;background:#fff;display:grid;place-items:center;
+  border:6px solid var(--c);box-shadow:0 12px 24px rgba(46,58,89,.16);box-sizing:border-box}
+.mini .emo{font-size:80px;animation:float 4s ease-in-out infinite}
+.mini:nth-of-type(2n) .emo{animation-delay:-2s}
+
+/* ---------- 2 · checklist ---------- */
+.check-wrap{display:flex;align-items:center;gap:50px;width:100%}
+.check-list{flex:1;display:flex;flex-direction:column;gap:36px}
+.check-row{display:flex;align-items:center;gap:30px;padding:26px 44px;font-size:56px;font-weight:800;line-height:1.15}
+.check-row .emo{font-size:74px;flex:none}
+.side-art{position:relative;width:520px;height:520px;flex:none;display:grid;place-items:center}
+.side-art svg{position:absolute;top:0;right:0;bottom:0;left:0;width:100%;height:100%}
+.side-art .emo{position:relative;font-size:270px}
+
+/* ---------- 3 · what ---------- */
+.what{display:flex;flex-direction:column;align-items:flex-start;gap:66px;width:100%}
+.keyphrase{font-size:56px;font-weight:900;line-height:1.15;background:var(--soft);border:5px dashed var(--accent);
+  padding:20px 50px 24px;border-radius:60px;max-width:1180px;box-sizing:border-box}
+.tiles{display:flex;justify-content:space-between;width:100%}
+.tile{width:222px;height:252px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:10px 6px}
+.tile .emo{font-size:108px}
+.tile .lbl{font-size:38px}
+.st-what{right:110px;top:178px}
+
+/* ---------- 4 · two columns ---------- */
+.cols{display:flex;gap:60px;width:100%;align-items:stretch}
+.col{flex:1;padding:36px 44px 44px;display:flex;flex-direction:column;gap:22px}
+.col-head{align-self:flex-start;background:var(--accent);font-family:var(--f-title);font-weight:700;font-size:52px;
+  letter-spacing:2px;line-height:1;padding:14px 36px 16px;border-radius:999px;margin-bottom:6px;--r:-1.5deg}
+.row{display:flex;align-items:center;gap:28px;font-size:48px;font-weight:800;line-height:1.1}
+.ebub{flex:none;width:112px;height:112px;border-radius:50%;background:var(--soft);display:grid;place-items:center}
+.ebub .emo{font-size:68px}
+
+/* ---------- cards (5, 8, 10, 11) ---------- */
+.cards{display:grid;width:100%}
+.c{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:22px;padding:36px 22px}
+.c:nth-child(odd){--r:-1.2deg} .c:nth-child(even){--r:1.2deg}
+.cards.n4{grid-template-columns:repeat(4,1fr);gap:36px}
+.n4 .c{height:440px} .n4 .emo{font-size:150px} .n4 .lbl{font-size:48px}
+.cards.n5{grid-template-columns:repeat(5,1fr);gap:30px}
+.n5 .c{height:430px} .n5 .emo{font-size:128px} .n5 .lbl{font-size:42px}
+.cards.n6{grid-template-columns:repeat(3,1fr);gap:44px 40px}
+.n6 .c{flex-direction:row;justify-content:flex-start;text-align:left;height:220px;padding:20px 34px;gap:28px}
+.n6 .c:nth-child(odd){--r:-.8deg} .n6 .c:nth-child(even){--r:.8deg}
+.n6 .emo{font-size:100px;flex:none} .n6 .lbl{font-size:46px;text-align:left}
+.body.has-sticker{align-items:flex-end}
+.st-cards{right:100px;top:178px;width:270px;height:270px}
+
+/* ---------- 9 · icons ---------- */
+.icons{display:flex;justify-content:space-between;align-items:flex-start;width:100%}
+.icon{width:300px;display:flex;flex-direction:column;align-items:center;gap:24px}
+.icon:nth-child(even){margin-top:90px}
+.bubble{width:250px;height:250px;border-radius:50%;background:var(--soft);border:6px solid var(--accent);box-sizing:border-box;
+  display:grid;place-items:center;box-shadow:0 10px 0 var(--mid), 0 22px 36px rgba(46,58,89,.12)}
+.bubble .emo{font-size:128px}
+.icon .lbl{font-size:44px}
+
+/* ---------- 6 · magic number ---------- */
+.num-wrap{display:flex;align-items:center;gap:70px}
+.num-circle{position:relative;width:600px;height:600px;display:grid;place-items:center}
+.num-circle svg{position:absolute;top:0;right:0;bottom:0;left:0;width:100%;height:100%}
+.num{position:relative;font-family:var(--f-title);font-weight:700;font-size:400px;line-height:1;color:var(--accent);
+  text-shadow:14px 14px 0 var(--ink);letter-spacing:4px}
+.num-unit{font-family:var(--f-title);font-weight:700;font-size:96px;line-height:1.08;max-width:640px}
+.source{text-align:center;font-size:36px;font-weight:800;line-height:1.1}
+
+/* ---------- 7 · people ---------- */
+.people-wrap{display:flex;flex-direction:column;align-items:center;gap:56px;width:100%}
+.people{display:flex;gap:26px;align-items:flex-end}
+.person svg{width:130px;height:208px;display:block}
+.person.on svg{filter:drop-shadow(0 10px 12px rgba(46,58,89,.22))}
+.stat{text-align:center;line-height:1.08}
+.stat-big{display:block;font-family:var(--f-title);font-weight:700;font-size:112px;color:var(--accent);text-shadow:7px 7px 0 var(--ink)}
+.stat-text{display:block;font-size:60px;font-weight:900;margin-top:12px}
+
+/* ---------- 11 · challenge ---------- */
+.chal-sub{font-family:var(--f-title);font-weight:600;font-size:64px;line-height:1.1;margin-top:10px}
+.chal-wrap{display:flex;flex-direction:column;align-items:center;width:100%}
+.n4.chal .c{height:400px}
+.pick{cursor:pointer;transition:transform .35s cubic-bezier(.3,1.4,.5,1), opacity .35s, box-shadow .35s}
+.pick:hover{box-shadow:0 14px 0 var(--mid), 0 28px 44px rgba(46,58,89,.18)}
+.chal.has .pick{opacity:.42;transform:scale(.92)}
+.chal.has .pick.chosen{opacity:1;transform:translateY(-12px) scale(1.12);z-index:2;
+  box-shadow:0 0 0 6px var(--accent), 0 14px 0 6px var(--mid), 0 30px 50px rgba(46,58,89,.22)}
+.great{margin-top:56px;visibility:hidden;font-family:var(--f-title);font-weight:700;font-size:76px;line-height:1;
+  background:var(--sun);border:6px solid #fff;border-radius:999px;padding:18px 54px 22px;
+  box-shadow:0 14px 28px rgba(46,58,89,.18);--r:-2deg;transform:rotate(var(--r))}
+.great.show{visibility:visible;animation:pop .6s cubic-bezier(.3,1.35,.5,1) backwards}
+.reset{position:absolute;left:60px;bottom:32px;z-index:3;cursor:pointer;background:#fff;border:4px solid var(--accent);
+  border-radius:999px;font-size:36px;font-weight:800;line-height:1;padding:12px 30px 14px;box-shadow:0 8px 18px rgba(46,58,89,.14)}
+.reset:hover{background:var(--soft)}
+
+/* ---------- 12 · closing ---------- */
+.closing{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:70px}
+.close-line{font-size:58px;font-weight:900;line-height:1.2;text-align:center;background:#fff;border:5px solid var(--lilac);
+  border-radius:70px;padding:24px 60px 28px;max-width:1560px;box-sizing:border-box;box-shadow:0 10px 0 #E2D8FF, 0 24px 40px rgba(46,58,89,.12)}
+.thanks{font-family:var(--f-title);font-weight:700;font-size:250px;line-height:1;white-space:nowrap;letter-spacing:4px}
+.thanks span{display:inline-block;text-shadow:10px 10px 0 var(--ink)}
+.closing .mini{width:140px;height:140px}
+.closing .mini .emo{font-size:76px}
+
+/* ---------- progress dots ---------- */
+#dots{position:absolute;left:50%;bottom:46px;transform:translateX(-50%);display:flex;align-items:center;gap:14px;z-index:5}
+.dot{width:22px;height:22px;border-radius:11px;background:var(--c);opacity:.3;cursor:pointer;transition:width .3s, opacity .3s}
+.dot.seen{opacity:.65}
+.dot.on{width:58px;opacity:1}
+#confetti{position:absolute;top:0;right:0;bottom:0;left:0;width:1920px;height:1080px;pointer-events:none;z-index:10}
+
+@media (prefers-reduced-motion: reduce){
+  .slide.active, .slide.active .pop, .great.show{animation:none}
+  .mini .emo{animation:none}
+}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="dots"></div>
+  <canvas id="confetti" width="1920" height="1080"></canvas>
+</div>
+
+<script>
+(function(){
+  /* ---------- colors ---------- */
+  const COLORS = [
+    // bg = fondo de la diapositiva (muy clarito, del color de quien expone)
+    { accent:"#FF7A6B", soft:"#FFE3DE", mid:"#FFBFB7", bg:"#FFF5F1" },  // [NOMBRE 1] coral
+    { accent:"#4DA8FF", soft:"#DCEEFF", mid:"#B3D9FF", bg:"#F3F9FF" },  // [NOMBRE 2] celeste
+    { accent:"#2EC4A0", soft:"#D4F4EA", mid:"#A3E8D6", bg:"#F1FBF7" },  // [NOMBRE 3] menta
+  ];
+  const ALL = { accent:"#A98BFF", soft:"#EFE9FF", mid:"#FFE08A", bg:"#FFF8EE" };   // portada y cierre (crema)
+  const FIVE = ["#FF7A6B", "#4DA8FF", "#2EC4A0", "#FFC93C", "#A98BFF"];
+
+  const names = NAMES.filter(n => String(n).trim() !== "").slice(0, 3);
+  const TURNS = names.length >= 3 ? TURNOS_3 : names.length === 2 ? TURNOS_2 : [[2,3,4,5,6,7,8,9,10,11]];
+  const ownerOf = num => TURNS.findIndex(t => t.includes(num));
+  function nextOf(num){
+    const o = ownerOf(num);
+    if (o < 0 || num !== Math.max(...TURNS[o])) return null;
+    return o + 1 < TURNS.length ? { name: names[o + 1], color: COLORS[o + 1].accent }
+                                : { name: UI.everyone, color: "#FFC93C" };
+  }
+
+  /* ---------- helpers ---------- */
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
+  const fmt = s => esc(s).replace(/\*(.+?)\*/g, '<span class="mark">$1</span>');
+  const emo = e => `<span class="emo">${e}</span>`;
+  const BLOBS = [
+    "M44.7,-63.3C56.5,-53.2,63.5,-38,68.3,-22.2C73.1,-6.4,75.6,10,70.9,24.3C66.2,38.6,54.2,50.8,40.2,59.6C26.2,68.4,10.2,73.8,-6.7,73.6C-23.6,73.3,-41.3,67.4,-53.6,56C-65.8,44.6,-72.6,27.7,-74.5,10.6C-76.4,-6.5,-73.4,-23.9,-64.3,-37.2C-55.2,-50.5,-40,-59.7,-25,-68.4C-10,-77.1,4.8,-85.3,18.4,-82.6C32,-79.9,32.9,-73.4,44.7,-63.3Z",
+    "M39.9,-51.6C52.4,-45.8,63.6,-35.3,69.4,-21.9C75.2,-8.6,75.6,7.6,69.9,21C64.2,34.4,52.4,45,39.3,54.6C26.2,64.2,11.8,72.8,-3.6,77.7C-19,82.6,-35.4,83.8,-46.8,76.1C-58.2,68.4,-64.6,51.8,-69.4,35.6C-74.2,19.4,-77.4,3.6,-73.7,-10.2C-70,-24,-59.4,-35.8,-47.3,-41.9C-35.2,-48,-21.6,-48.4,-8.4,-50.9C4.8,-53.4,27.4,-57.4,39.9,-51.6Z"
+  ];
+  const blob = (n, fill, extra = "") =>
+    `<svg viewBox="-85 -85 170 170" ${extra}><path d="${BLOBS[n]}" style="fill:${fill}"/></svg>`;
+  const STAR = (() => { const p = [], n = 14;
+    for (let i = 0; i < n * 2; i++){ const r = i % 2 ? 86 : 100, a = Math.PI * i / n;
+      p.push((Math.cos(a) * r).toFixed(1) + "," + (Math.sin(a) * r).toFixed(1)); }
+    return p.join(" "); })();
+  const sticker = (text, cls) => `<div class="sticker pop ${cls}">
+      <svg viewBox="-115 -115 230 230"><polygon points="${STAR}" fill="#FFC93C" stroke="#FFC93C" stroke-width="16" stroke-linejoin="round"/>
+      <circle r="76" fill="none" stroke="#fff" stroke-width="4" stroke-dasharray="9 9"/></svg>
+      <span>${fmt(text)}</span></div>`;
+
+  /* decorations */
+  const at = (x, y, w, h, rot = 0) => `style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;transform:rotate(${rot}deg)"`;
+  const dBlob = (n, fill, x, y, size, rot) => blob(n, fill, at(x, y, size, size, rot));
+  // pattern of dots: 3 columns × 5 rows, fits in the empty left margin
+  const dDots = (x, y, c) => { let s = ""; for (let r = 0; r < 5; r++) for (let k = 0; k < 3; k++) s += `<circle cx="${8 + k * 34}" cy="${8 + r * 34}" r="6.5"/>`;
+    return `<svg viewBox="0 0 84 152" style="fill:${c};left:${x}px;top:${y}px;width:84px;height:152px">${s}</svg>`; };
+  const dSquig = (x, y, c, rot = 0) => `<svg ${at(x, y, 200, 42, rot)} viewBox="0 0 240 50"><path d="M10 25 Q 35 2 60 25 T 110 25 T 160 25 T 210 25" fill="none" stroke="${c}" stroke-width="11" stroke-linecap="round"/></svg>`;
+  const dSpark = (x, y, s, c) => `<svg ${at(x, y, s, s)} viewBox="0 0 100 100"><path d="M50 0C54 36 64 46 100 50C64 54 54 64 50 100C46 64 36 54 0 50C36 46 46 36 50 0Z" fill="${c}"/></svg>`;
+
+  /* Decorations only go in the empty edges of the slide (corners and side margins),
+     so they never sit under or over a title, card, emoji, badge or button. */
+  function deco(idx, owner, s, hasNext){
+    if (owner < 0) return `<div class="deco">
+      ${dBlob(0, "#FFE7E3", -280, -280, 380, 10)}
+      ${dBlob(1, "#EFE9FF", 1800, -270, 420, 200)}
+      ${dBlob(1, "#FFF0C4", -360, 940, 500, 120)}
+      ${dBlob(0, "#E0F0FF", 1780, 950, 460, 40)}
+      ${dDots(8, 380, "#D9CCFF")}
+      ${dSquig(1250, 1000, "#A3E8D6", -3)}
+      ${dSpark(30, 660, 48, "#FF7A6B")} ${dSpark(1850, 520, 46, "#4DA8FF")}
+    </div>`;
+    const a = (idx % 2), b = 1 - a;
+    return `<div class="deco">
+      ${dBlob(a, "var(--soft)", -280, -280, 380, idx * 40)}
+      ${s.type !== "challenge" ? dBlob(b, "var(--soft)", -360, 940, 500, idx * 25) : ""}
+      ${dBlob(a, "var(--soft)", 1840, 380, 440, idx * 30)}
+      ${!hasNext ? dBlob(b, "var(--soft)", 1780, 950, 460, idx * 50) : ""}
+      ${dDots(8, 380, "var(--mid)")}
+      ${dSpark(30, 660, 48, "var(--accent)")}
+      ${dSpark(1850, 200, 46, "var(--accent)")}
+      ${!hasNext ? dSquig(1250, 1000, "var(--mid)", -3) : ""}
+    </div>`;
+  }
+
+  const person = on => {
+    const fill = on ? "var(--accent)" : "#C3CAD8";
+    const mouth = on ? '<path d="M39 40 Q50 51 61 40" stroke="#2E3A59" stroke-width="4" fill="none" stroke-linecap="round"/>'
+                     : '<path d="M41 43 L59 43" stroke="#2E3A59" stroke-width="4" stroke-linecap="round"/>';
+    return `<div class="person pop ${on ? "on" : ""}"><svg viewBox="0 0 100 160">
+      <circle cx="50" cy="32" r="27" style="fill:${fill}"/>
+      <path d="M12 146 L12 106 Q12 68 50 68 Q88 68 88 106 L88 146 Q88 156 78 156 L22 156 Q12 156 12 146 Z" style="fill:${fill}"/>
+      <circle cx="41" cy="29" r="3.8" fill="#2E3A59"/><circle cx="59" cy="29" r="3.8" fill="#2E3A59"/>${mouth}</svg></div>`;
+  };
+
+  /* ---------- slide templates ---------- */
+  const T = s => `<h1 class="title pop">${fmt(s.title)}</h1>`;
+  const card = (it, extra = "") => `<div class="card c pop" ${extra}>${emo(it.e)}<span class="lbl">${fmt(it.t)}</span></div>`;
+
+  const R = {
+    cover: s => `<div class="cover">
+      <div class="cover-left">
+        <h1 class="cover-title pop">${esc(s.title).split(" ").map((w, i) => `<span style="color:${FIVE[i % 3]}">${w}</span>`).join(" ")}</h1>
+        <p class="cover-sub pop">${fmt(s.subtitle)}</p>
+        <div class="names">${names.map((n, i) => `<span class="name pop" style="--c:${COLORS[i].accent};--r:${i % 2 ? 2 : -2}deg">${esc(n)}</span>`).join("")}</div>
+      </div>
+      <div class="cover-art">
+        <div class="art-blob pop">${blob(1, "#EFE9FF", 'style="transform:rotate(25deg)"')}${blob(0, "#FFE7A8", 'style="transform:scale(.94)"')}${emo(s.emoji)}</div>
+        ${(s.art || []).map((e, i) => `<span class="mini pop" style="--c:${FIVE[i % 5]};${["left:0;top:0", "right:0;top:0", "left:0;bottom:0", "right:0;bottom:0"][i % 4]}">${emo(e)}</span>`).join("")}
+      </div></div>`,
+
+    checklist: s => T(s) + `<div class="body"><div class="check-wrap">
+      <div class="check-list">${s.items.map(it => `<div class="check-row card pop">${emo(it.e)}<span>${fmt(it.t)}</span></div>`).join("")}</div>
+      <div class="side-art pop">${blob(0, "var(--soft)")}${emo(s.art)}</div></div></div>`,
+
+    what: s => T(s) + `<div class="body"><div class="what">
+      <div class="keyphrase pop">${fmt(s.key)}</div>
+      <div class="tiles">${s.items.map(it => `<div class="tile card pop">${emo(it.e)}<span class="lbl">${fmt(it.t)}</span></div>`).join("")}</div>
+      </div></div>` + sticker(s.sticker, "st-what"),
+
+    twocol: s => T(s) + `<div class="body"><div class="cols">${s.cols.map(c => `<div class="col card pop">
+      <div class="col-head">${fmt(c.head)}</div>
+      ${c.items.map(it => `<div class="row pop"><span class="ebub">${emo(it.e)}</span><span>${fmt(it.t)}</span></div>`).join("")}
+      </div>`).join("")}</div></div>`,
+
+    cards: s => T(s) + `<div class="body ${s.sticker ? "has-sticker" : ""}"><div class="cards n${s.items.length}">${s.items.map(it => card(it)).join("")}</div></div>`
+      + (s.sticker ? sticker(s.sticker, "st-cards") : ""),
+
+    icons: s => T(s) + `<div class="body"><div class="icons">${s.items.map(it =>
+      `<div class="icon pop"><div class="bubble">${emo(it.e)}</div><span class="lbl">${fmt(it.t)}</span></div>`).join("")}</div></div>`,
+
+    number: s => T(s) + `<div class="body"><div class="num-wrap">
+      <div class="num-circle pop">${blob(1, "var(--soft)")}<span class="num">${esc(s.number)}</span></div>
+      <div class="num-unit pop">${fmt(s.unit)}</div></div></div>
+      <div class="source pop">${fmt(s.source)}</div>`,
+
+    people: s => T(s) + `<div class="body"><div class="people-wrap">
+      <div class="people">${Array.from({ length: s.total }, (_, i) => person(i >= s.total - s.active)).join("")}</div>
+      <div class="stat pop"><span class="stat-big">${fmt(s.big)}</span><span class="stat-text">${fmt(s.text)}</span></div>
+      </div></div><div class="source pop">${fmt(s.source)}</div>`,
+
+    challenge: s => {
+      const items = SLIDES[s.cardsFrom - 1].items;
+      return T(s) + `<div class="chal-sub pop">${fmt(s.subtitle)}</div>
+        <div class="body"><div class="chal-wrap">
+          <div class="cards n${items.length} chal">${items.map(it => card(it, 'role="button"').replace('card c pop', 'card c pick pop')).join("")}</div>
+          <div class="great">${fmt(s.great)}</div>
+        </div></div>
+        <div class="reset pop" role="button">${esc(s.reset)}</div>`;
+    },
+
+    closing: s => `<div class="closing">
+      <div class="close-line pop">${fmt(s.line)}</div>
+      <div class="thanks pop">${[...s.big].map((ch, i) => ch === " " ? " " : `<span style="color:${FIVE[i % 5]}">${esc(ch)}</span>`).join("")}</div>
+      ${(s.art || []).map((e, i) => `<span class="mini pop" style="--c:${FIVE[i % 5]};${["left:40px;top:20px", "right:40px;top:20px", "left:40px;bottom:20px", "right:40px;bottom:20px", "left:620px;top:10px", "right:620px;bottom:10px"][i % 6]}">${emo(e)}</span>`).join("")}
+    </div>`,
+  };
+
+  /* ---------- build ---------- */
+  const stage = document.getElementById("stage");
+  const dotsEl = document.getElementById("dots");
+  const els = SLIDES.map((s, idx) => {
+    const num = idx + 1, owner = ownerOf(num), pal = owner >= 0 ? COLORS[owner] : ALL;
+    const sec = document.createElement("section");
+    sec.className = "slide t-" + s.type;
+    sec.style.cssText = `--accent:${pal.accent};--soft:${pal.soft};--mid:${pal.mid};--bg:${pal.bg}`;
+    const nx = nextOf(num);
+    let html = deco(idx, owner, s, !!nx);
+    if (owner >= 0) html += `<div class="badge pop">${UI.mic} ${esc(names[owner])}</div>`;
+    html += (R[s.type] || (() => ""))(s);
+    if (nx) html += `<div class="next pop" style="--nc:${nx.color}">${esc(UI.next)} ${esc(nx.name)} →</div>`;
+    sec.innerHTML = html;
+    sec.querySelectorAll(".pop").forEach((el, i) => el.style.setProperty("--i", i));
+    stage.insertBefore(sec, dotsEl);
+
+    const d = document.createElement("div");
+    d.className = "dot";
+    d.style.setProperty("--c", pal.accent);
+    d.addEventListener("click", e => { e.stopPropagation(); go(idx); });
+    dotsEl.appendChild(d);
+    return sec;
+  });
+
+  /* ---------- keep every title clear of the "🎤 name" badge ----------
+     (long names make the badge wider, so the title gets the space that is left) */
+  // Only the slide on screen can be measured (the others are hidden), so this runs on every slide change.
+  function fitTitle(sec){
+    const b = sec && sec.querySelector(".badge"), t = sec && sec.querySelector(".title");
+    if (b && t && b.offsetWidth) t.style.maxWidth = Math.max(700, b.offsetLeft - 40 - t.offsetLeft) + "px";
+  }
+  const refit = () => fitTitle(document.querySelector(".slide.active"));
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(refit);
+  addEventListener("load", refit);
+
+  /* ---------- scale to screen ---------- */
+  function fit(){
+    const k = Math.min(innerWidth / 1920, innerHeight / 1080);
+    stage.style.transform = `translate(-50%,-50%) scale(${k})`;
+  }
+  addEventListener("resize", fit); fit();
+
+  /* ---------- navigation ---------- */
+  let cur = -1;
+  function go(n){
+    n = Math.max(0, Math.min(SLIDES.length - 1, n));
+    if (n === cur) return;
+    if (cur >= 0) els[cur].classList.remove("active");
+    cur = n;
+    els[n].classList.add("active");
+    fitTitle(els[n]);
+    [...dotsEl.children].forEach((d, i) => { d.classList.toggle("on", i === n); d.classList.toggle("seen", i < n); });
+    try { history.replaceState(null, "", "#" + (n + 1)); } catch (e) {}
+  }
+  const onChallenge = () => SLIDES[cur] && SLIDES[cur].type === "challenge";
+
+  document.addEventListener("keydown", e => {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    const k = e.key;
+    if (["ArrowRight", "ArrowDown", "PageDown", " ", "Spacebar", "Enter"].includes(k)) { e.preventDefault(); go(cur + 1); }
+    else if (["ArrowLeft", "ArrowUp", "PageUp", "Backspace"].includes(k)) { e.preventDefault(); go(cur - 1); }
+    else if (k === "Home") { e.preventDefault(); resetChallenge(); go(0); }
+    else if (k === "End") { e.preventDefault(); go(SLIDES.length - 1); }
+    else if (k === "f" || k === "F") { e.preventDefault(); toggleFS(); }
+  });
+  document.addEventListener("click", e => {
+    if (e.button !== 0 || e.target.closest(".pick, .reset, #dots") || onChallenge()) return;
+    go(cur + 1);
+  });
+  document.addEventListener("contextmenu", e => { e.preventDefault(); if (!onChallenge()) go(cur - 1); });
+
+  function toggleFS(){
+    const d = document, el = d.documentElement;
+    if (!(d.fullscreenElement || d.webkitFullscreenElement)) {
+      const r = (el.requestFullscreen || el.webkitRequestFullscreen);
+      if (r) { const p = r.call(el); if (p && p.catch) p.catch(() => {}); }
+    } else {
+      const x = (d.exitFullscreen || d.webkitExitFullscreen); if (x) x.call(d);
+    }
+  }
+
+  // hide the mouse pointer when it is not moving
+  let hideT;
+  document.addEventListener("mousemove", () => {
+    document.body.classList.remove("nocursor");
+    clearTimeout(hideT);
+    hideT = setTimeout(() => document.body.classList.add("nocursor"), 2500);
+  });
+
+  /* ---------- challenge (slide 11) ---------- */
+  function resetChallenge(){
+    stage.querySelectorAll(".chal").forEach(w => w.classList.remove("has"));
+    stage.querySelectorAll(".pick").forEach(c => c.classList.remove("chosen"));
+    stage.querySelectorAll(".great").forEach(g => g.classList.remove("show"));
+    parts = [];
+  }
+  stage.querySelectorAll(".t-challenge").forEach(sec => {
+    const wrap = sec.querySelector(".chal"), great = sec.querySelector(".great");
+    sec.querySelectorAll(".pick").forEach(cardEl => cardEl.addEventListener("click", e => {
+      e.stopPropagation();
+      wrap.classList.add("has");
+      wrap.querySelectorAll(".pick").forEach(c => c.classList.toggle("chosen", c === cardEl));
+      great.classList.remove("show"); void great.offsetWidth; great.classList.add("show");
+      const r = cardEl.getBoundingClientRect(), sr = stage.getBoundingClientRect(), k = sr.width / 1920;
+      burst((r.left + r.width / 2 - sr.left) / k, (r.top + r.height / 3 - sr.top) / k, -Math.PI / 2, 1.4, 140);
+      burst(80, 1080, -Math.PI / 3, .6, 70);
+      burst(1840, 1080, -2 * Math.PI / 3, .6, 70);
+    }));
+    sec.querySelector(".reset").addEventListener("click", e => { e.stopPropagation(); resetChallenge(); });
+  });
+
+  /* ---------- confetti ---------- */
+  const cv = document.getElementById("confetti"), cx = cv.getContext("2d");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let parts = [], raf = null;
+  function burst(x, y, dir, spread, count){
+    if (reduce) count = Math.round(count / 3);
+    for (let i = 0; i < count; i++){
+      const a = dir + (Math.random() - .5) * spread, sp = 12 + Math.random() * 20;
+      parts.push({ x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, g: .5 + Math.random() * .25,
+        w: 14 + Math.random() * 14, h: 8 + Math.random() * 10, rot: Math.random() * 6, vr: (Math.random() - .5) * .35,
+        c: FIVE[i % 5], life: 0, max: 130 + Math.random() * 70, round: Math.random() < .3 });
+    }
+    if (!raf) raf = requestAnimationFrame(tick);
+  }
+  function tick(){
+    cx.clearRect(0, 0, 1920, 1080);
+    parts = parts.filter(p => p.life < p.max && p.y < 1150);
+    for (const p of parts){
+      p.life++; p.vx *= .985; p.vy = p.vy * .985 + p.g; p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+      cx.globalAlpha = Math.min(1, (p.max - p.life) / 30);
+      cx.fillStyle = p.c;
+      cx.save(); cx.translate(p.x, p.y); cx.rotate(p.rot);
+      if (p.round){ cx.beginPath(); cx.arc(0, 0, p.h * .7, 0, Math.PI * 2); cx.fill(); }
+      else cx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      cx.restore();
+    }
+    cx.globalAlpha = 1;
+    raf = parts.length ? requestAnimationFrame(tick) : null;
+    if (!raf) cx.clearRect(0, 0, 1920, 1080);
+  }
+
+  /* ---------- start ---------- */
+  const h = parseInt(location.hash.slice(1), 10);
+  go(h >= 1 && h <= SLIDES.length ? h - 1 : 0);
+})();
+</script>
+</body>
+</html>
